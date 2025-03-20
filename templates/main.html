@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Главная - Учет потерь техники{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="text-center mb-4">Добро пожаловать в систему учета потерь техники</h1>
+    
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <h5 class="card-title">О системе</h5>
+                    <p class="card-text">
+                        Данный сервис предназначен для ведения учета потерь военной техники в ходе боевых действий. 
+                        Система позволяет собирать, анализировать и визуализировать данные по ликвидированной технике.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <h5 class="card-title">Статистика</h5>
+                    <p class="card-text">
+                        Вы можете просматривать статистику уничтоженной техники по различным параметрам: 
+                        по регионам, по датам и по типам техники. Данные можно выгрузить в отчеты.
+                    </p>
+                    <a href="" class="btn btn-primary">Перейти</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <h5 class="card-title">Личный состав</h5>
+                    <p class="card-text">
+                        В разделе "Личный состав" можно просматривать список военнослужащих и награждать бойцов, 
+                        уничтоживших больше всего техники.
+                    </p>
+                    <a href="" class="btn btn-primary">Перейти</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <h5 class="card-title">Учет техники</h5>
+                    <p class="card-text">
+                        В этом разделе можно вести учет военной техники, отслеживать поврежденные и уничтоженные машины.
+                    </p>
+                    <a href="" class="btn btn-primary">Перейти</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <h5 class="card-title">Графики</h5>
+                    <p class="card-text">
+                        Визуализируйте статистику с помощью графиков и диаграмм. Сравнивайте потери техники по разным параметрам.
+                    </p>
+                    <a href="" class="btn btn-primary">Перейти</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-4">
+            <div class="card shadow-lg">
+                <div class="card-body">
+                    <h5 class="card-title">Отчеты</h5>
+                    <p class="card-text">
+                        Генерация отчетов по уничтоженной технике и выплатам бойцам. Возможность экспорта данных в PDF.
+                    </p>
+                    <a href="" class="btn btn-primary">Перейти</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
