@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Список военной техники</h2>
+    <table class="table table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th>Название</th>
+                <th>Модель</th>
+                <th>Категория</th>
+                <th>Награда</th>
+            </tr>
+        </thead>
+        <tbody id="equipmentTable">
+        </tbody>
+    </table>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    fetch('/api/equipment-types/')
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not ok');
+            return response.json();
+        })
+        .then(data => {
+            const tbody = document.getElementById('equipmentTable');
+            tbody.innerHTML = '';
+            
+            data.forEach(item => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${item.name}</td>
+                        <td>${item.model_display || 'Не указано'}</td>
+                        <td>${item.category_display || 'Не указана'}</td>
+                        <td>${item.reward || 0} рублей</td>
+                    </tr>
+                `;
+            });
+        })
+        .catch(error => {
+            console.error('Ошибка загрузки данных:', error);
+            const tbody = document.getElementById('equipmentTable');
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="5" class="text-danger text-center">
+                        Ошибка загрузки данных: ${error.message}
+                    </td>
+                </tr>
+            `;
+        });
+});
+</script>
+{% endblock %}

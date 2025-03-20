@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-success text-white">
+            <h4 class="mb-0"><i class="bi bi-file-earmark-spreadsheet"></i> Генерация отчетов</h4>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="mb-3">
+                    <label class="form-label">Тип отчета</label>
+                    <select class="form-select" name="report_type" required>
+                        {% for key, report in report_types %}
+                            <option value="{{ key }}">{{ report.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Дата начала</label>
+                        <input type="date" class="form-control" name="date_from" required>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <label class="form-label">Дата окончания</label>
+                        <input type="date" class="form-control" name="date_to" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-success w-100">
+                    <i class="bi bi-file-earmark-excel"></i> Скачать Excel-отчет
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

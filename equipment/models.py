@@ -41,6 +41,10 @@ class EquipmentModel(models.Model):
 class EquipmentType(models.Model):
     name = models.CharField(max_length=50, unique=True, verbose_name="Наименование техники")
     model = models.ForeignKey(EquipmentModel, on_delete=models.CASCADE, verbose_name="Модель техники")
+    reward = models.PositiveIntegerField(
+        verbose_name='Выплата за уничтожение/захват',
+        default=1,
+    )
 
     class Meta:
         verbose_name = 'Тип техники'

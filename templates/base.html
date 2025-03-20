@@ -1,69 +1,100 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}Учет потерь техники{% endblock %}</title>
-
-    {#Bootstrap#}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light">
-        <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
             <a class="navbar-brand" href="{% url 'homepage' %}">
-                <img src="https://avatars.dzeninfra.ru/get-zen_doc/5255669/pub_62405352d90de20a9a594128_624055036e599c56a3e76cd4/scale_1200" style="width: 2rem; height: 2rem" alt="Логотип" width="40" height="40" class="d-inline-block align-text-top">
-                Zа Наших!
+                Zа наших!
             </a>
 
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
-                aria-controls="navbarNav" aria-expanded="false" aria-label="Переключить навигацию">
+            <button class="navbar-toggler" 
+                    type="button" 
+                    data-bs-toggle="collapse" 
+                    data-bs-target="#mainNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav me-auto">
+                    {% if user.is_authenticated %}
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="statsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Статистика
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="statsDropdown">
-                            <li><a class="dropdown-item" href="">По регионам</a></li>
-                            <li><a class="dropdown-item" href="">По датам</a></li>
-                            <li><a class="dropdown-item" href="">По типам техники</a></li>
-                        </ul>
-                    </li>
-
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="personnelDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" id="personnelDropdown" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
                             Личный состав
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="personnelDropdown">
-                            <li><a class="dropdown-item" href="">Список бойцов</a></li>
-                            <li><a class="dropdown-item" href="">Награды</a></li>
+                            <li><a class="dropdown-item" href="{% url 'temp-soldier-list' %}">Список личного состава</a></li>
                         </ul>
                     </li>
-
+                    
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="equipmentDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Техника
+                        <a class="nav-link dropdown-toggle" href="#" id="equipmentDropdown" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            Снаряжение
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="equipmentDropdown">
-                            <li><a class="dropdown-item" href="">Список техники</a></li>
-                            <li><a class="dropdown-item" href="">Поврежденная техника</a></li>
+                            <li><a class="dropdown-item" href="{% url 'temp-battlezone-list' %}">Зоны боевых действий</a></li>
+                            <li><a class="dropdown-item" href="{% url 'temp-equipmenttype-list' %}">Типы военной техники</a></li>
                         </ul>
+                    </li>
+                    
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="statsDropdown" role="button" 
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            Статистика
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="statsDropdown">
+                            <li><a class="dropdown-item" href="{% url 'temp-lossrecords-list' %}">Записи об уничтоженной технике</a></li>
+                            <li><a class="dropdown-item" href="{% url 'payment-stats' %}">Статистика</a></li>
+                            <li><a class="dropdown-item" href="{% url 'report-form' %}">Скачать отчёт</a></li>
+                        </ul>
+                    </li>
+                    {% endif %}
+                </ul>
+            
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        {% if user.is_authenticated %}
+                            <a class="btn btn-outline-light" href="/admin/" target="_blank">
+                                <i class="bi bi-gear"></i> Панель администратора
+                            </a>
+                        {% else %}
+                            <a class="btn btn-outline-light" href="/admin/login/?next=/">
+                                <i class="bi bi-box-arrow-in-right"></i> Вход
+                            </a>
+                        {% endif %}
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <div class="container mt-4">
-        {% block content %}
-        {% endblock %}
-    </div>
-
+    <main class="container mt-4">
+        {% if user.is_authenticated %}
+            {% block content %}{% endblock %}
+        {% else %}
+            <div class="alert alert-warning text-center">
+                <h4 class="alert-heading">Требуется авторизация</h4>
+                <p>Для доступа к системе необходимо войти в учетную запись</p>
+                <hr>
+                <a href="/admin/login/?next=/" class="btn btn-primary">
+                    <i class="bi bi-box-arrow-in-right"></i> Перейти к авторизации
+                </a>
+            </div>
+        {% endif %}
+    </main>
+    
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'rest_framework/js/jquery-3.7.1.min.js' %}"></script>
+    
+    {% block extra_js %}{% endblock %}
 </body>
 </html>

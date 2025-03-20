@@ -69,6 +69,9 @@ class Soldier(models.Model):
         null=True
     )
 
+    class Meta:
+        verbose_name_plural = 'Солдаты'
+        verbose_name = 'Солдат'
 
     def __str__(self):
         return f"{self.rank} {self.last_name} {self.first_name}"

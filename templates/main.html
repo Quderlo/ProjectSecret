@@ -5,84 +5,167 @@
 
 {% block content %}
 <div class="container">
-    <h1 class="text-center mb-4">Добро пожаловать в систему учета потерь техники</h1>
-    
-    <div class="row">
-        <div class="col-md-4">
-            <div class="card shadow-lg">
-                <div class="card-body">
-                    <h5 class="card-title">О системе</h5>
-                    <p class="card-text">
-                        Данный сервис предназначен для ведения учета потерь военной техники в ходе боевых действий. 
-                        Система позволяет собирать, анализировать и визуализировать данные по ликвидированной технике.
-                    </p>
-                </div>
-            </div>
+    <!-- Карточка для проверяющих -->
+    <div class="card info-card mb-5">
+        <div class="card-header bg-primary text-white">
+            <h3 class="card-title mb-0">
+                <i class="bi bi-info-circle-fill"></i> Руководство для проверяющих
+            </h3>
         </div>
-        
-        <div class="col-md-4">
-            <div class="card shadow-lg">
-                <div class="card-body">
-                    <h5 class="card-title">Статистика</h5>
-                    <p class="card-text">
-                        Вы можете просматривать статистику уничтоженной техники по различным параметрам: 
-                        по регионам, по датам и по типам техники. Данные можно выгрузить в отчеты.
-                    </p>
-                    <a href="" class="btn btn-primary">Перейти</a>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-4">
-            <div class="card shadow-lg">
-                <div class="card-body">
-                    <h5 class="card-title">Личный состав</h5>
-                    <p class="card-text">
-                        В разделе "Личный состав" можно просматривать список военнослужащих и награждать бойцов, 
-                        уничтоживших больше всего техники.
-                    </p>
-                    <a href="" class="btn btn-primary">Перейти</a>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-8">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <i class="bi bi-database-gear"></i> Все данные можно редактировать через админ-панель
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-graph-up"></i> Данные выводятся через API
+                        </li>
+                        <li class="list-group-item">
+                            <i class="bi bi-shield-check"></i> Авторизация через панель администратора
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
     </div>
 
-    <div class="row mt-4">
-        <div class="col-md-4">
-            <div class="card shadow-lg">
+    <h1 class="text-center mb-4">Добро пожаловать в систему учета потерь техники</h1>
+    
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        <div class="col">
+            <div class="card h-100 shadow">
+                <div class="card-header bg-dark text-white">
+                    <i class="bi bi-people-fill"></i> Личный состав
+                </div>
                 <div class="card-body">
-                    <h5 class="card-title">Учет техники</h5>
+                    <h5 class="card-title">Просмотр данных о бойцах</h5>
                     <p class="card-text">
-                        В этом разделе можно вести учет военной техники, отслеживать поврежденные и уничтоженные машины.
+                        Просмотр данных военнослужащих
                     </p>
-                    <a href="" class="btn btn-primary">Перейти</a>
+                    <div class="mt-auto">
+                        <a href="{% url 'temp-soldier-list' %}" class="btn btn-primary">
+                            Перейти к списку <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
         
-        <div class="col-md-4">
-            <div class="card shadow-lg">
+        <div class="col">
+            <div class="card h-100 shadow">
+                <div class="card-header bg-dark text-white">
+                    <i class="bi bi-truck-front"></i> Военная техника
+                </div>
                 <div class="card-body">
-                    <h5 class="card-title">Графики</h5>
+                    <h5 class="card-title">Учет снаряжения</h5>
                     <p class="card-text">
-                        Визуализируйте статистику с помощью графиков и диаграмм. Сравнивайте потери техники по разным параметрам.
+                        Реестр техники
                     </p>
-                    <a href="" class="btn btn-primary">Перейти</a>
+                    <div class="mt-auto">
+                        <a href="{% url 'temp-equipmenttype-list' %}" class="btn btn-primary">
+                            Список техники <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
         
-        <div class="col-md-4">
-            <div class="card shadow-lg">
+        <div class="col">
+            <div class="card h-100 shadow">
+                <div class="card-header bg-dark text-white">
+                    <i class="bi bi-map"></i> Зоны боев
+                </div>
                 <div class="card-body">
-                    <h5 class="card-title">Отчеты</h5>
+                    <h5 class="card-title">География операций</h5>
                     <p class="card-text">
-                        Генерация отчетов по уничтоженной технике и выплатам бойцам. Возможность экспорта данных в PDF.
+                        Просмотр зон военных действий
                     </p>
-                    <a href="" class="btn btn-primary">Перейти</a>
+                    <div class="mt-auto">
+                        <a href="{% url 'temp-battlezone-list' %}" class="btn btn-primary">
+                            Карта операций <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col">
+            <div class="card h-100 shadow">
+                <div class="card-header bg-dark text-white">
+                    <i class="bi bi-bar-chart-line"></i> Статистика
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Анализ данных</h5>
+                    <p class="card-text">
+                        Графики и диаграммы по выплатам
+                    </p>
+                    <div class="mt-auto">
+                        <a href="{% url 'payment-stats' %}" class="btn btn-primary">
+                            Открыть графики <i class="bi bi-arrow-right"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col">
+            <div class="card h-100 shadow">
+                <div class="card-header bg-dark text-white">
+                    <i class="bi bi-file-earmark-pdf"></i> Отчетность
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Генерация отчетов</h5>
+                    <p class="card-text">
+                        Формирование отчетов в Excel.
+                    </p>
+                    <div class="mt-auto">
+                        <a href="{% url 'report-form' %}" class="btn btn-primary">
+                            Заполнить форму
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col">
+            <div class="card h-100 shadow">
+                <div class="card-header bg-dark text-white">
+                    <i class="bi bi-gear"></i> Настройки
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">Системные параметры</h5>
+                    <p class="card-text">
+                        Управление пользователями и настройками системы.
+                    </p>
+                    <div class="mt-auto">
+                        <a href="/admin/" class="btn btn-warning" target="_blank">
+                            Администрирование <i class="bi bi-shield-lock"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .info-card {
+        border: 2px solid #0d6efd;
+        border-radius: 15px;
+        box-shadow: 0 0.5rem 1rem rgba(0,0,0,0.15);
+    }
+    .card-header {
+        border-radius: 13px 13px 0 0 !important;
+    }
+    .card.h-100 {
+        transition: transform 0.2s;
+    }
+    .card.h-100:hover {
+        transform: translateY(-5px);
+    }
+</style>
 {% endblock %}

@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Записи о потерях{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Учет уничтоженной техники</h2>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th>Солдат</th>
+                    <th>Тип техники</th>
+                    <th>Зона боев</th>
+                    <th>Дата</th>
+                    <th>Количество</th>
+                    <th>Сумма выплаты</th>
+                </tr>
+            </thead>
+            <tbody id="lossRecordsTable">
+                <tr>
+                    <td colspan="6" class="text-center">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Загрузка...</span>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const tbody = document.getElementById('lossRecordsTable');
+    
+    fetch('/api/loss-records/')
+        .then(response => {
+            if (!response.ok) throw new Error('Ошибка загрузки данных');
+            return response.json();
+        })
+        .then(data => {
+            tbody.innerHTML = '';
+            
+            data.forEach(item => {
+                const row = `
+                    <tr>
+                        <td>${item.soldier_name || 'Не указан'}</td>
+                        <td>${item.equipment_name || 'Не указан'}</td>
+                        <td>${item.battle_zone_name || 'Не указана'}</td>
+                        <td>${new Date(item.date).toLocaleDateString()}</td>
+                        <td>${item.quantity}</td>
+                        <td>${item.sum_award?.toLocaleString() || 0} ₽</td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        })
+        .catch(error => {
+            console.error('Ошибка:', error);
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="7" class="text-danger text-center">
+                        ${error.message}
+                    </td>
+                </tr>
+            `;
+        });
+});
+</script>
+{% endblock %}

@@ -83,9 +83,32 @@ class EquipmentModelModelSerializer(serializers.ModelSerializer):
 
 
 class EquipmentTypeModelSerializer(serializers.ModelSerializer):
+    # Добавляем дополнительные поля для отображения
+    model_display = serializers.CharField(
+        source='model.display_name',
+        read_only=True,
+        help_text="Название модели техники"
+    )
+
+    category_display = serializers.CharField(
+        source='model.category.display_name',
+        read_only=True,
+        help_text="Категория техники"
+    )
+
     class Meta:
         model = EquipmentType
-        fields = '__all__'
+        fields = [
+            'id',
+            'name',
+            'model',
+            'model_display',
+            'category_display',
+            'reward',
+        ]
+        extra_kwargs = {
+            'model': {'write_only': True}  # Прячем исходное поле model в выводе
+        }
 
     def validate_name(self, value):
         value = value.strip()
@@ -96,7 +119,8 @@ class EquipmentTypeModelSerializer(serializers.ModelSerializer):
         return value
 
     def validate(self, data):
-        queryset = EquipmentType.objects.filter(name=data['name'])
+        # Проверка уникальности имени
+        queryset = EquipmentType.objects.filter(name=data.get('name'))
         if self.instance:
             queryset = queryset.exclude(pk=self.instance.pk)
         if queryset.exists():
@@ -104,9 +128,12 @@ class EquipmentTypeModelSerializer(serializers.ModelSerializer):
                 {'name': 'Тип техники с таким названием уже существует'}
             )
 
-        if 'model' in data and data['model'].category != data.get('model').category:
-            raise serializers.ValidationError(
-                {'model': 'Несоответствие категории модели'}
-            )
+        # Проверка соответствия категории (если модель передана в данных)
+        if 'model' in data:
+            model = data['model']
+            if model.category != self.instance.model.category if self.instance else model.category:
+                raise serializers.ValidationError(
+                    {'model': 'Несоответствие категории модели'}
+                )
 
         return data

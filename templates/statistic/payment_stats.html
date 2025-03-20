@@ -1,0 +1,134 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Статистика выплат{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Статистика выплат</h2>
+    
+    <div class="row">
+        <!-- График по зонам боевых действий -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Выплаты по зонам боевых действий</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="zoneChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- График по типам техники -->
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Выплаты по типам техники</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="equipmentChart" height="300"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- График временной динамики -->
+        <div class="col-12 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Динамика выплат по дням</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="timelineChart" height="100"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Цветовая палитра
+    const chartColors = [
+        '#4e73df', '#1cc88a', '#36b9cc', '#f6c23e', '#e74a3b',
+        '#858796', '#5a5c69', '#3a3b45', '#2e2f37', '#1a1b1f'
+    ];
+
+    // Загрузка данных
+    Promise.all([
+        fetch('/api/payments-by-zone/').then(r => r.json()),
+        fetch('/api/payments-by-equipment/').then(r => r.json()),
+        fetch('/api/payments-timeline/').then(r => r.json())
+    ]).then(([zonesData, equipmentData, timelineData]) => {
+        renderZoneChart(zonesData);
+        renderEquipmentChart(equipmentData);
+        renderTimelineChart(timelineData);
+    });
+
+    function renderZoneChart(data) {
+        new Chart(document.getElementById('zoneChart'), {
+            type: 'bar',
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    label: 'Сумма выплат (₽)',
+                    data: data.values,
+                    backgroundColor: chartColors,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: false }
+                }
+            }
+        });
+    }
+
+    function renderEquipmentChart(data) {
+        new Chart(document.getElementById('equipmentChart'), {
+            type: 'doughnut',
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    data: data.values,
+                    backgroundColor: chartColors,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                plugins: {
+                    legend: { position: 'right' }
+                }
+            }
+        });
+    }
+
+    function renderTimelineChart(data) {
+        new Chart(document.getElementById('timelineChart'), {
+            type: 'line',
+            data: {
+                labels: data.labels,
+                datasets: [{
+                    label: 'Сумма выплат (₽)',
+                    data: data.values,
+                    borderColor: '#4e73df',
+                    tension: 0.4,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
+    }
+});
+</script>
+{% endblock %}
