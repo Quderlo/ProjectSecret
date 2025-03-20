@@ -7,6 +7,6 @@ migrate:
 	venv/bin/python3 manage.py migrate
 
 entry:
-	export DJANGO_SETTINGS_MODULE=config.settings && venv/bin/python3 entrypoint.py
+	venv/bin/python3 entrypoint.py
 
 startapp: start-venv migrate entry
